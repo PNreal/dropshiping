@@ -2096,7 +2096,7 @@ router.post('/transactions/deposit', async (req, res) => {
       parseFloat(amount),
       balanceBefore,
       balanceAfter,
-      description || `Yêu cầu nạp tiền ${parseFloat(amount).toLocaleString('vi-VN')} VNĐ`,
+      description || `Yêu cầu nạp tiền ${parseFloat(amount).toLocaleString('vi-VN')}`,
       'pending',
       ''
     );
@@ -2365,7 +2365,7 @@ router.post('/transactions/withdraw', async (req, res) => {
     const balanceAfter = balanceBefore; // Chưa trừ tiền, chờ admin duyệt
     
     // Tạo mô tả với thông tin ngân hàng
-    let withdrawDescription = `Yêu cầu rút tiền ${parseFloat(amount).toLocaleString('vi-VN')} VNĐ`;
+    let withdrawDescription = `Yêu cầu rút tiền ${parseFloat(amount).toLocaleString('vi-VN')}`;
     if (bankName || bankAccount || accountHolder) {
       withdrawDescription += ` - Ngân hàng: ${bankName || 'N/A'}, Số TK: ${bankAccount || 'N/A'}, Chủ TK: ${accountHolder || 'N/A'}`;
     }

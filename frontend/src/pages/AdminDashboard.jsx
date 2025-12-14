@@ -243,6 +243,12 @@ const AdminDashboard = () => {
   });
   const navigate = useNavigate();
 
+  // Helper function to remove VNĐ from text
+  const removeVND = (text) => {
+    if (!text) return text;
+    return text.replace(/\s*VNĐ/gi, '').trim();
+  };
+
   useEffect(() => {
     // Kiểm tra đăng nhập admin hoặc staff
     const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn');
@@ -462,11 +468,11 @@ const AdminDashboard = () => {
       username: member.username,
       password: '', // Không hiển thị password cũ
       referralCode: member.referral_code || '',
-      balance: member.balance || 0,
-      creditScore: member.credit_score || 100,
-      minWithdrawal: member.min_withdrawal || 0,
-      maxWithdrawal: member.max_withdrawal || 0,
-      vipLevel: member.vip_level || member.vip || 0,
+      balance: parseFloat(member.balance) || 0,
+      creditScore: parseFloat(member.credit_score) || 100,
+      minWithdrawal: parseFloat(member.min_withdrawal) || 0,
+      maxWithdrawal: parseFloat(member.max_withdrawal) || 0,
+      vipLevel: parseFloat(member.vip_level || member.vip) || 0,
       bankName: member.bank_name || '',
       bankAccountNumber: member.bank_account_number || '',
       bankAccountHolder: member.bank_account_holder || ''
@@ -629,10 +635,57 @@ const AdminDashboard = () => {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'balance' || name === 'creditScore' || name === 'minWithdrawal' || name === 'maxWithdrawal' || name === 'vipLevel' ? parseFloat(value) || 0 : value
-    });
+    // Xử lý các trường số: cho phép số thập phân (0.1, 0.2, etc.)
+    if (name === 'balance' || name === 'creditScore' || name === 'minWithdrawal' || name === 'maxWithdrawal' || name === 'vipLevel') {
+      // Xử lý đặc biệt cho balance: cho phép cả dấu chấm và dấu phẩy
+      if (name === 'balance') {
+        // Loại bỏ các ký tự không phải số, dấu chấm, dấu phẩy
+        let cleanedValue = value.replace(/[^0-9.,]/g, '');
+        
+        // Chỉ cho phép một dấu phân cách thập phân
+        const dotIndex = cleanedValue.indexOf('.');
+        const commaIndex = cleanedValue.indexOf(',');
+        
+        if (dotIndex !== -1 && commaIndex !== -1) {
+          // Nếu có cả hai, giữ dấu xuất hiện đầu tiên
+          if (dotIndex < commaIndex) {
+            cleanedValue = cleanedValue.replace(/,/g, '');
+          } else {
+            cleanedValue = cleanedValue.replace(/\./g, '');
+          }
+        }
+        
+        // Chuyển đổi dấu phẩy thành dấu chấm để parse
+        const normalizedValue = cleanedValue.replace(',', '.');
+        
+        // Parse số thập phân, nếu rỗng hoặc không hợp lệ thì dùng 0
+        let numValue = normalizedValue === '' ? 0 : parseFloat(normalizedValue);
+        
+        // Giới hạn tối đa 5 chữ số thập phân
+        if (!isNaN(numValue) && normalizedValue !== '') {
+          numValue = Math.round(numValue * 100000) / 100000;
+        }
+        
+        setFormData({
+          ...formData,
+          [name]: isNaN(numValue) ? 0 : numValue
+        });
+      } else {
+        // Các trường số khác: chỉ hỗ trợ dấu chấm
+        const normalizedValue = value === '' ? '' : value.replace(',', '.');
+        const numValue = normalizedValue === '' ? 0 : parseFloat(normalizedValue);
+        
+        setFormData({
+          ...formData,
+          [name]: isNaN(numValue) ? 0 : numValue
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
   };
 
   const loadStaff = async () => {
@@ -2618,7 +2671,7 @@ const AdminDashboard = () => {
                                 </td>
                                 <td>{(parseFloat(transaction.balance_before) || 0).toLocaleString('vi-VN')}</td>
                                 <td>{(parseFloat(transaction.balance_after) || 0).toLocaleString('vi-VN')}</td>
-                                <td>{transaction.description || '-'}</td>
+                                <td>{removeVND(transaction.description) || '-'}</td>
                                 <td>
                                   <span className={`status-badge status-${transaction.status}`}>
                                     {transaction.status === 'pending' ? 'Chờ xử lý' : transaction.status === 'completed' ? 'Hoàn thành' : 'Đã hủy'}
@@ -4373,12 +4426,13 @@ const AdminDashboard = () => {
               <div className="form-group">
                 <label>Số dư</label>
                 <input
-                  type="number"
+                  type="text"
                   name="balance"
                   value={formData.balance}
                   onChange={handleFormChange}
-                  min="0"
-                  step="0.01"
+                  inputMode="decimal"
+                  pattern="[0-9]*[.,]?[0-9]*"
+                  placeholder="0.00 hoặc 0,00"
                 />
               </div>
               <div className="form-group">
@@ -4475,12 +4529,13 @@ const AdminDashboard = () => {
               <div className="form-group">
                 <label>Số dư</label>
                 <input
-                  type="number"
+                  type="text"
                   name="balance"
                   value={formData.balance}
                   onChange={handleFormChange}
-                  min="0"
-                  step="0.01"
+                  inputMode="decimal"
+                  pattern="[0-9]*[.,]?[0-9]*"
+                  placeholder="0.00 hoặc 0,00"
                 />
               </div>
               <div className="form-group">

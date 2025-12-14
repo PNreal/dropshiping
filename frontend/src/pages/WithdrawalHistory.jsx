@@ -88,6 +88,11 @@ const WithdrawalHistory = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
+  const removeVND = (text) => {
+    if (!text) return text;
+    return text.replace(/\s*VNĐ/gi, '').trim();
+  };
+
   return (
     <div className="withdrawal-history-page">
       <div className="withdrawal-history-container">
@@ -130,7 +135,7 @@ const WithdrawalHistory = () => {
                   <div className="transaction-body">
                     <div className="transaction-info-row">
                       <span className="transaction-label">Mô tả:</span>
-                      <span className="transaction-value">{transaction.description || '-'}</span>
+                      <span className="transaction-value">{removeVND(transaction.description) || '-'}</span>
                     </div>
                     <div className="transaction-info-row">
                       <span className="transaction-label">Số dư trước:</span>

@@ -43,20 +43,38 @@ const TopUp = () => {
   };
 
   const handleAmountChange = (e) => {
-    // Lấy giá trị và loại bỏ tất cả ký tự không phải số
-    let value = e.target.value.replace(/[^0-9]/g, '');
-    setBankAmount(value);
+    let value = e.target.value;
+    // Loại bỏ các ký tự không phải số, dấu chấm, dấu phẩy
+    let cleanedValue = value.replace(/[^0-9.,]/g, '');
+    
+    // Chỉ cho phép một dấu phân cách thập phân
+    const dotIndex = cleanedValue.indexOf('.');
+    const commaIndex = cleanedValue.indexOf(',');
+    
+    if (dotIndex !== -1 && commaIndex !== -1) {
+      // Nếu có cả hai, giữ dấu xuất hiện đầu tiên
+      if (dotIndex < commaIndex) {
+        cleanedValue = cleanedValue.replace(/,/g, '');
+      } else {
+        cleanedValue = cleanedValue.replace(/\./g, '');
+      }
+    }
+    
+    setBankAmount(cleanedValue);
   };
 
   const handleBankConfirm = async () => {
-    const amount = parseFloat(bankAmount);
+    // Chuyển đổi dấu phẩy thành dấu chấm và parse, làm tròn đến 5 chữ số thập phân
+    const normalizedAmount = bankAmount.replace(',', '.');
+    const numAmount = parseFloat(normalizedAmount);
+    const roundedAmount = Math.round(numAmount * 100000) / 100000;
     
-    if (!bankAmount.trim() || isNaN(amount) || amount <= 0) {
+    if (!bankAmount.trim() || isNaN(numAmount) || numAmount <= 0) {
       alert('Vui lòng nhập số tiền hợp lệ (lớn hơn 0)');
       return;
     }
 
-    if (amount < 10000) {
+    if (numAmount < 10000) {
       alert('Số tiền nạp tối thiểu là 10.000');
       return;
     }
@@ -70,7 +88,7 @@ const TopUp = () => {
       return;
     }
 
-    const confirmMessage = `Bạn có chắc chắn muốn nạp ${amount.toLocaleString('vi-VN')}?\n\nSau khi xác nhận, vui lòng chuyển khoản đến:\n- Ngân hàng: ${bankInfo.bank_name}\n- Chủ TK: ${bankInfo.bank_account_holder}\n- Số TK: ${bankInfo.bank_account_number}\n\nYêu cầu sẽ được gửi và chờ admin duyệt.`;
+    const confirmMessage = `Bạn có chắc chắn muốn nạp ${roundedAmount.toLocaleString('vi-VN')}?\n\nSau khi xác nhận, vui lòng chuyển khoản đến:\n- Ngân hàng: ${bankInfo.bank_name}\n- Chủ TK: ${bankInfo.bank_account_holder}\n- Số TK: ${bankInfo.bank_account_number}\n\nYêu cầu sẽ được gửi và chờ admin duyệt.`;
     
     if (!window.confirm(confirmMessage)) {
       return;
@@ -80,12 +98,12 @@ const TopUp = () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/transactions/deposit`, {
         userId: parseInt(userId),
-        amount: amount,
-        description: `Nạp tiền qua ngân hàng ${bankInfo.bank_name} - Số tiền: ${amount.toLocaleString('vi-VN')}`
+        amount: roundedAmount,
+        description: `Nạp tiền qua ngân hàng ${bankInfo.bank_name} - Số tiền: ${roundedAmount.toLocaleString('vi-VN')}`
       });
 
       if (response.data.success) {
-        alert(`Yêu cầu nạp tiền ${amount.toLocaleString('vi-VN')} đã được gửi thành công!\n\nVui lòng chờ admin duyệt yêu cầu của bạn.`);
+        alert(`Yêu cầu nạp tiền ${roundedAmount.toLocaleString('vi-VN')} đã được gửi thành công!\n\nVui lòng chờ admin duyệt yêu cầu của bạn.`);
         setBankAmount('');
         navigate('/account/deposit-history');
       }
@@ -134,12 +152,30 @@ const TopUp = () => {
                   className="amount-input"
                   value={bankAmount}
                   onChange={handleAmountChange}
-                  placeholder="Nhập số tiền (VD: 100000)"
+                  onBlur={(e) => {
+                    // Khi blur, chuyển đổi dấu phẩy thành dấu chấm và làm tròn đến 5 chữ số thập phân
+                    let value = e.target.value;
+                    if (value) {
+                      const normalizedValue = value.replace(',', '.');
+                      const numValue = parseFloat(normalizedValue);
+                      if (!isNaN(numValue)) {
+                        const roundedValue = Math.round(numValue * 100000) / 100000;
+                        setBankAmount(roundedValue.toString());
+                      }
+                    }
+                  }}
+                  placeholder="Nhập số tiền (VD: 100000 hoặc 100000,5)"
+                  inputMode="decimal"
+                  pattern="[0-9]*[.,]?[0-9]*"
                   disabled={loading}
                 />
                 {bankAmount && (
                   <div className="amount-preview">
-                    Số tiền: <strong>{parseFloat(bankAmount).toLocaleString('vi-VN')}</strong>
+                    Số tiền: <strong>{(() => {
+                      const normalized = bankAmount.replace(',', '.');
+                      const num = parseFloat(normalized);
+                      return isNaN(num) ? '0' : num.toLocaleString('vi-VN');
+                    })()}</strong>
                   </div>
                 )}
                 <small className="amount-hint">Số tiền tối thiểu: 10.000</small>

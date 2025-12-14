@@ -121,12 +121,16 @@ const Withdraw = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!amount.trim() || parseFloat(amount) <= 0) {
+    // Chuyển đổi dấu phẩy thành dấu chấm và parse
+    const normalizedAmount = amount.replace(',', '.');
+    const numAmount = parseFloat(normalizedAmount);
+    
+    if (!amount.trim() || isNaN(numAmount) || numAmount <= 0) {
       alert('Vui lòng nhập số tiền hợp lệ');
       return;
     }
 
-    if (parseFloat(amount) > userBalance) {
+    if (numAmount > userBalance) {
       alert('Số tiền rút không được vượt quá số dư hiện tại');
       return;
     }
@@ -147,9 +151,14 @@ const Withdraw = () => {
 
     setLoading(true);
     try {
+      // Chuyển đổi dấu phẩy thành dấu chấm và parse, làm tròn đến 5 chữ số thập phân
+      const normalizedAmount = amount.replace(',', '.');
+      const numAmount = parseFloat(normalizedAmount);
+      const roundedAmount = Math.round(numAmount * 100000) / 100000;
+      
       const response = await axios.post(`${API_BASE_URL}/transactions/withdraw`, {
         userId: parseInt(userId),
-        amount: parseFloat(amount),
+        amount: roundedAmount,
         bankName: bankName.trim(),
         bankAccount: bankAccount.trim(),
         accountHolder: accountHolder.trim(),
@@ -249,13 +258,44 @@ const Withdraw = () => {
             <div className="form-group">
               <label className="form-label">Số tiền rút *</label>
               <input
-                type="number"
+                type="text"
                 className="form-input"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Nhập số tiền muốn rút"
-                min="1"
-                max={userBalance}
+                onChange={(e) => {
+                  let value = e.target.value;
+                  // Loại bỏ các ký tự không phải số, dấu chấm, dấu phẩy
+                  let cleanedValue = value.replace(/[^0-9.,]/g, '');
+                  
+                  // Chỉ cho phép một dấu phân cách thập phân
+                  const dotIndex = cleanedValue.indexOf('.');
+                  const commaIndex = cleanedValue.indexOf(',');
+                  
+                  if (dotIndex !== -1 && commaIndex !== -1) {
+                    // Nếu có cả hai, giữ dấu xuất hiện đầu tiên
+                    if (dotIndex < commaIndex) {
+                      cleanedValue = cleanedValue.replace(/,/g, '');
+                    } else {
+                      cleanedValue = cleanedValue.replace(/\./g, '');
+                    }
+                  }
+                  
+                  setAmount(cleanedValue);
+                }}
+                onBlur={(e) => {
+                  // Khi blur, chuyển đổi dấu phẩy thành dấu chấm và làm tròn đến 5 chữ số thập phân
+                  let value = e.target.value;
+                  if (value) {
+                    const normalizedValue = value.replace(',', '.');
+                    const numValue = parseFloat(normalizedValue);
+                    if (!isNaN(numValue)) {
+                      const roundedValue = Math.round(numValue * 100000) / 100000;
+                      setAmount(roundedValue.toString());
+                    }
+                  }
+                }}
+                placeholder="Nhập số tiền (VD: 100000 hoặc 100000,5)"
+                inputMode="decimal"
+                pattern="[0-9]*[.,]?[0-9]*"
                 required
               />
               <small className="form-hint">Số tiền tối đa: {userBalance.toLocaleString('vi-VN')}</small>
