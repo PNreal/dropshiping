@@ -331,24 +331,31 @@ const ProductDetail = () => {
               <div className="product-info">
                 <div className="info-row">
                   <span className="info-label">Mã sản phẩm:</span>
-                  <span className="info-value">{product.product_code || 'N/A'}</span>
+                  <span className="info-value">
+                    {/* Hỗ trợ cả snake_case và camelCase để đồng bộ với dữ liệu mới nhập */}
+                    {product.product_code || product.productCode || 'N/A'}
+                  </span>
                 </div>
                 <div className="info-row">
                   <span className="info-label">Giá:</span>
-                  <span className="info-value price">{parseFloat(product.price || 0).toLocaleString('vi-VN')}</span>
+                  <span className="info-value price">
+                    {parseFloat(product.price || product.unitPrice || 0).toLocaleString('vi-VN')}
+                  </span>
                 </div>
                 <div className="info-row">
                   <span className="info-label">Số lượng:</span>
-                  <span className="info-value">{product.stock || 0}</span>
+                  <span className="info-value">
+                    {product.stock ?? product.quantity ?? 0}
+                  </span>
                 </div>
                 <div className="info-row">
                   <span className="info-label">Danh mục:</span>
-                  <span className="info-value">{product.category || 'N/A'}</span>
+                  <span className="info-value">{product.category || product.categoryName || 'N/A'}</span>
                 </div>
-                {product.supplier && (
+                {(product.supplier || product.supplierName) && (
                   <div className="info-row">
                     <span className="info-label">Nhà cung cấp:</span>
-                    <span className="info-value">{product.supplier}</span>
+                    <span className="info-value">{product.supplier || product.supplierName}</span>
                   </div>
                 )}
               </div>

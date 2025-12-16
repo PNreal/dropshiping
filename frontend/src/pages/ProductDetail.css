@@ -62,7 +62,8 @@
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  /* Cho phép nội dung dài hiển thị đầy đủ, không bị cắt mất */
+  overflow: visible;
 }
 
 @keyframes fadeInUp {
