@@ -72,6 +72,39 @@
   transition: border-color 0.3s;
 }
 
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 45px;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.3s;
+}
+
+.password-toggle-btn:hover {
+  color: #d40511;
+}
+
+.password-toggle-btn:focus {
+  outline: none;
+}
+
 .form-group input:focus {
   outline: none;
   border-color: #d40511;

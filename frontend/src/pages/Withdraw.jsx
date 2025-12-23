@@ -225,7 +225,7 @@ const Withdraw = () => {
                 <div>
                   <strong>Chức năng rút tiền đã bị đóng</strong>
                   <p style={{ margin: '5px 0 0 0', fontSize: '14px' }}>
-                    Tài khoản của bạn hiện không thể thực hiện rút tiền. Vui lòng liên hệ admin để được hỗ trợ.
+                    Tài khoản của bạn hiện không thể thực hiện rút tiền. VUI LÒNG LIÊN HỆ QUẢN LÝ TÀI VỤ ĐỂ HỖ TRỢ
                   </p>
                 </div>
               </div>

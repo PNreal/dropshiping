@@ -204,7 +204,7 @@ const ItemExport = () => {
 
             <div className="item-form-card">
               <div className="item-title">{item.title}</div>
-              {['A', 'B', 'C', 'D'].map((opt, index) => {
+              {['A', 'B', 'C', 'D'].map((opt) => {
                 const isActive = selectedRates.includes(opt);
                 const toggle = () => {
                   setSelectedRates((prev) =>
@@ -217,7 +217,7 @@ const ItemExport = () => {
                     className={`item-pill ${isActive ? 'active' : ''}`}
                     onClick={toggle}
                   >
-                    Sản phẩm {index + 1}
+                    {opt}
                   </div>
                 );
               })}

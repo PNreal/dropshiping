@@ -17,6 +17,7 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [reviewsLoading, setReviewsLoading] = useState(true);
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   
   // Review form state
   const [rating, setRating] = useState(5);
@@ -149,6 +150,12 @@ const ProductDetail = () => {
       });
 
       if (response.data.success) {
+        // Show success notification
+        setShowSuccessNotification(true);
+        setTimeout(() => {
+          setShowSuccessNotification(false);
+        }, 3000);
+        
         // Reset form
         setRating(5);
         setComment('');
@@ -242,6 +249,16 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail-page">
+      {/* Success Notification */}
+      {showSuccessNotification && (
+        <div className="success-notification">
+          <div className="success-notification-content">
+            <span className="success-icon">✓</span>
+            <span className="success-message">Gửi đánh giá thành công!</span>
+          </div>
+        </div>
+      )}
+      
       <div className="product-detail-container">
         <button className="back-button" onClick={() => navigate(-1)}>
           <FontAwesomeIcon icon={faArrowLeft} /> Quay lại

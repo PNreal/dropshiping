@@ -147,7 +147,7 @@ const WithdrawalHistory = () => {
                     </div>
                     {transaction.admin_note && (
                       <div className="transaction-info-row">
-                        <span className="transaction-label">Ghi chú admin:</span>
+                        <span className="transaction-label">Ghi chú:</span>
                         <span className="transaction-value">{transaction.admin_note}</span>
                       </div>
                     )}
