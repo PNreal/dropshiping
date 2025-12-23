@@ -1,39 +1,32 @@
 # DHL Shipping - Tài Liệu Dự Án
 
-Chào mừng đến với tài liệu dự án DHL Shipping! Thư mục này chứa tất cả các tài liệu chi tiết về dự án.
+> **Lưu ý:** Đây là dự án học tập
+
+Chào mừng đến với tài liệu dự án! Thư mục này chứa tất cả các tài liệu chi tiết về dự án.
 
 ## Mục Lục
 
 ### Bắt Đầu
 - [README Tổng Quan](../README.md) - Tổng quan về dự án
 - [Hướng Dẫn Cài Đặt](INSTALLATION.md) - Cài đặt và thiết lập môi trường
-- [Hướng Dẫn Triển Khai](DEPLOYMENT.md) - Triển khai ứng dụng lên production
 
 ### Kiến Trúc & Phát Triển
 - [Kiến Trúc Hệ Thống](ARCHITECTURE.md) - Cấu trúc và kiến trúc dự án
 - [Hướng Dẫn Phát Triển](DEVELOPMENT.md) - Quy trình phát triển và best practices
 - [Tài Liệu API](API.md) - Tài liệu đầy đủ về REST API
 
-### Người Dùng
-- [Hướng Dẫn Sử Dụng](USER_GUIDE.md) - Hướng dẫn sử dụng cho người dùng cuối
-- [Hướng Dẫn Admin](ADMIN_GUIDE.md) - Hướng dẫn quản trị hệ thống
-
 ### Kỹ Thuật
 - [Cấu Hình](CONFIGURATION.md) - Cấu hình hệ thống và biến môi trường
 - [Database Schema](DATABASE.md) - Cấu trúc cơ sở dữ liệu
 - [Troubleshooting](TROUBLESHOOTING.md) - Xử lý sự cố thường gặp
 
-### Đóng Góp
-- [Hướng Dẫn Đóng Góp](../CONTRIBUTING.md) - Quy trình đóng góp cho dự án
-
 ## Tổng Quan Nhanh
 
-**DHL Shipping** là một ứng dụng web full-stack để quản lý dịch vụ vận chuyển, được xây dựng với:
+Ứng dụng web full-stack học tập với nhiều tính năng:
 
 - **Frontend**: React 19 + Vite
 - **Backend**: Node.js + Express.js
 - **Database**: SQLite3
-- **Deployment**: Docker + Nginx
 
 ## Đọc Tài Liệu Theo Trình Tự
 

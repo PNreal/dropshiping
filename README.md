@@ -1,7 +1,8 @@
-# DHL Shipping - Ứng dụng Web Quản lý Vận chuyển
-# Production domain: https://logistictransport.au
+# E-Commerce Website - Ứng dụng Web Thương mại Điện tử
 
-Ứng dụng web full-stack để quản lý dịch vụ vận chuyển DHL, được xây dựng với React.js (Frontend) và Node.js/Express (Backend).
+> **Lưu ý:** Đây là dự án học tập nhằm mục đích tìm hiểu và thực hành phát triển ứng dụng web full-stack.
+
+Ứng dụng web full-stack thương mại điện tử với nhiều tính năng, được xây dựng với React.js (Frontend) và Node.js/Express (Backend).
 
 ## Mục lục
 
@@ -56,8 +57,8 @@
 
 ### Bước 1: Clone repository
 ```bash
-git clone https://github.com/PNreal/dropshiping.git
-cd dropshiping
+git clone https://github.com/PNreal/e-commerce-website.git
+cd e-commerce-website
 ```
 
 ### Bước 2: Cài đặt Backend
@@ -94,7 +95,7 @@ Backend sẽ chạy tại: `http://localhost:5000`
 cd frontend
 npm run dev
 ```
-Frontend sẽ chạy tại: `http://localhost:5173`
+Frontend sẽ chạy tại: `http://localhost:3000`
 
 ### Production Mode
 
@@ -291,17 +292,21 @@ Proxy đã được cấu hình trong `vite.config.js` để forward `/api` requ
 
 This project is licensed under the ISC License.
 
-## Authors
+## Mục đích dự án
 
-- DHL Shipping Team
+Dự án này được tạo ra với mục đích học tập và thực hành:
+- Xây dựng ứng dụng web full-stack
+- Làm việc với React.js và Node.js/Express
+- Thiết kế RESTful API
+- Quản lý database với SQLite
+- Triển khai ứng dụng web
 
-## Acknowledgments
+## Tác giả
 
-- DHL for brand inspiration
-- React team for amazing framework
-- Express.js community
+Dự án học tập cá nhân
 
----
+## Ghi chú
 
-**Made with  for DHL Shipping**
+- Đây là dự án học tập, không phải sản phẩm thương mại
+- Mọi thương hiệu được sử dụng chỉ nhằm mục đích minh họa
 

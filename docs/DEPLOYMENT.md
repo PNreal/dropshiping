@@ -2,19 +2,18 @@
 
 Hướng dẫn chi tiết để triển khai ứng dụng DHL Shipping lên môi trường production.
 
+## Lưu ý
+
+> **Đây là dự án học tập**, các hướng dẫn deployment dưới đây chỉ mang tính chất tham khảo.
+
 ## Yêu Cầu
 
-### Server Requirements
+### Server Requirements (Tham khảo)
 - **OS**: Linux (Ubuntu 20.04+ recommended) hoặc Windows Server
 - **Node.js**: >= 16.x
 - **npm**: >= 8.x
 - **Nginx**: >= 1.18 (optional, for reverse proxy)
 - **PM2**: For process management (optional)
-- **Docker**: >= 20.x (optional, for containerized deployment)
-
-### Domain & SSL
-- Domain name đã được cấu hình
-- SSL certificate (Let's Encrypt recommended)
 
 ## Triển Khai Với Docker
 

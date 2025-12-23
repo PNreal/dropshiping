@@ -21,7 +21,7 @@ npm run dev
 ```
 
 3. **Mở trình duyệt:**
-   - Frontend: http://localhost:5173
+   - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
 
 ## Coding Standards

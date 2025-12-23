@@ -29,8 +29,8 @@ git --version
 ### Bước 1: Clone Repository
 
 ```bash
-git clone <repository-url>
-cd DHLSHIPPING
+git clone https://github.com/PNreal/e-commerce-website.git
+cd e-commerce-website
 ```
 
 ### Bước 2: Cài Đặt Backend Dependencies
@@ -116,7 +116,7 @@ cd frontend
 npm run dev
 ```
 
-Frontend sẽ chạy tại: `http://localhost:5173`
+Frontend sẽ chạy tại: `http://localhost:3000`
 
 ## Cài Đặt Với Docker (Tùy Chọn)
 
@@ -156,7 +156,7 @@ Backend đã được cấu hình CORS để cho phép requests từ frontend. N
 
 ```javascript
 app.use(cors({
-  origin: 'http://localhost:5173', // Frontend URL
+  origin: 'http://localhost:3000', // Frontend URL
   credentials: true
 }));
 ```
@@ -204,7 +204,7 @@ npm run lint
 
 ### Lỗi Port Đã Được Sử Dụng
 
-Nếu port 5000 hoặc 5173 đã được sử dụng:
+Nếu port 5000 hoặc 3000 đã được sử dụng:
 
 **Backend:**
 ```bash
@@ -216,7 +216,7 @@ PORT=5001 npm run dev
 Chỉnh sửa `vite.config.js`:
 ```javascript
 server: {
-  port: 5174
+  port: 3001
 }
 ```
 

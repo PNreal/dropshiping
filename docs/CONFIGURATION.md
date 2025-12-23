@@ -21,7 +21,7 @@ SESSION_SECRET=your-session-secret-key-here
 JWT_SECRET=your-jwt-secret-key-here
 
 # CORS
-CORS_ORIGIN=http://localhost:5173
+CORS_ORIGIN=http://localhost:3000
 
 # File Upload
 MAX_FILE_SIZE=5242880
@@ -56,9 +56,16 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
+    host: '0.0.0.0',
+    port: 3000,
+    strictPort: false,
+    open: false,
     proxy: {
       '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
+      '/uploads': {
         target: 'http://localhost:5000',
         changeOrigin: true,
       }
@@ -190,7 +197,7 @@ server {
 Backend (`server.js`):
 ```javascript
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200
 };
